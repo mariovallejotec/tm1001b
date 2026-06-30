@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plan de sesiones — Creatividad sonora y producción musical (TM1001B)</title>
+<style>
+  :root{
+    --verde:#00b050; --verde-soft:#ecfdf3; --verde-borde:#b8e6cb;
+    --azul:#2563eb; --azul-soft:#eff4ff; --azul-borde:#b9cdf7;
+    --gris:#475467; --gris-soft:#f3f5f7; --gris-borde:#d9dedc;
+    --tinta:#1d2939; --tec:#0a3d2c;
+    --amber:#d99000; --amber-soft:#fff7e6;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:-apple-system,Helvetica,Arial,sans-serif;color:var(--tinta);background:linear-gradient(180deg,#e8f0ec 0%,#eef3f0 100%);background-attachment:fixed;padding:36px 48px;font-size:17px;}
+  h1{font-size:30px;font-weight:800;color:var(--tec);margin-bottom:6px;border-left:8px solid var(--verde);padding-left:14px;}
+  .h1sub{color:var(--gris);font-size:14.5px;font-weight:600;margin:0 0 20px 22px;}
+  .header-row{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap;}
+  .cta-wrap{flex:none;display:flex;align-items:center;gap:8px;margin-top:6px;}
+  .cta-arrow{font-size:24px;animation:nudge 1s ease-in-out infinite;}
+  @keyframes nudge{0%,100%{transform:translateX(0);}50%{transform:translateX(7px);}}
+  @keyframes pulse{0%,100%{box-shadow:0 3px 10px rgba(0,176,80,.3);}50%{box-shadow:0 0 0 7px rgba(0,176,80,.16),0 4px 14px rgba(0,176,80,.4);}}
+  .btn-analitico{flex:none;display:inline-flex;align-items:center;gap:8px;background:var(--verde);color:#fff;text-decoration:none;font-size:14px;font-weight:700;padding:11px 18px;border-radius:10px;transition:background .12s,transform .1s;white-space:nowrap;animation:pulse 1.6s ease-in-out infinite;}
+  .btn-analitico:hover{background:#009a45;transform:translateY(-1px);}
+  .wrap{max-width:1180px;}
+  .lead{color:var(--gris);font-size:16px;line-height:1.6;margin-bottom:12px;}
+  .lead b{color:var(--tinta);}
+  .notas-junta-titulo{font-size:13px;text-transform:uppercase;letter-spacing:1px;color:var(--gris);font-weight:800;margin:22px 0 12px;padding-top:16px;border-top:1px solid var(--gris-borde);}
+  .grp{margin-bottom:16px;}
+  .grp:last-child{margin-bottom:0;}
+  .grptitle{font-size:15px;font-weight:700;color:var(--tec);background:var(--verde-soft);border-left:6px solid var(--verde);border-radius:8px;padding:9px 14px;margin-bottom:10px;}
+  .pend{display:flex;align-items:flex-start;gap:13px;padding:12px 4px;border-bottom:1px solid #eef2f0;cursor:pointer;}
+  .pend:last-child{border-bottom:none;}
+  .pend input[type=checkbox]{appearance:none;-webkit-appearance:none;width:22px;height:22px;border:2px solid var(--gris-borde);border-radius:6px;background:#fff;cursor:pointer;flex:none;margin-top:1px;position:relative;transition:all .12s;}
+  .pend input[type=checkbox]:hover{border-color:var(--amber);}
+  .pend input[type=checkbox]:checked{background:var(--amber);border-color:var(--amber);}
+  .pend input[type=checkbox]:checked::after{content:"";position:absolute;left:7px;top:3px;width:5px;height:10px;border:solid #fff;border-width:0 2.5px 2.5px 0;transform:rotate(45deg);}
+  .pend-whos{flex:none;display:flex;flex-direction:column;gap:4px;margin-top:1px;}
+  .pend-who{font-size:11.5px;font-weight:800;color:#fff;border-radius:99px;padding:2px 11px;text-align:center;}
+  .pend-who.who-mario{background:var(--verde);}
+  .pend-who.who-ramon{background:var(--azul);}
+  .pend-txt{font-size:15px;color:var(--tinta);line-height:1.45;}
+  .pend.done .pend-txt{color:var(--gris);text-decoration:line-through;}
+  .pend-lock{display:inline-block;margin-top:6px;font-size:12.5px;font-weight:700;color:#9a6700;background:var(--amber-soft);border:1px solid #f3d79a;border-radius:7px;padding:3px 9px;}
+
+  .balance{position:sticky;top:0;z-index:20;background:#fff;border:1px solid #d4ded8;border-radius:14px;padding:16px 20px;margin-bottom:22px;box-shadow:0 2px 10px rgba(0,0,0,.04);}
+  .balance h2{font-size:16px;color:var(--tec);margin-bottom:4px;display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px;}
+  .balance h2 .meta{font-size:13px;color:var(--gris);font-weight:600;}
+  .balbar{display:flex;height:26px;border-radius:8px;overflow:hidden;background:var(--gris-soft);border:1px solid var(--gris-borde);margin:10px 0 8px;}
+  .balseg{display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:700;color:#fff;white-space:nowrap;transition:width .2s;overflow:hidden;}
+  .balseg.m{background:var(--verde);} .balseg.r{background:var(--azul);} .balseg.none{background:transparent;color:var(--gris);}
+  .ballbls{display:flex;gap:18px;flex-wrap:wrap;font-size:13.5px;font-weight:700;}
+  .ballbls .m{color:var(--verde);} .ballbls .r{color:var(--azul);} .ballbls .none{color:var(--gris);}
+
+  .acc{background:#fff;border:1px solid #d4ded8;border-radius:14px;margin-bottom:18px;overflow:hidden;box-shadow:0 4px 16px rgba(10,61,44,.08);}
+  .acc-head{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:16px 24px;cursor:pointer;user-select:none;background:var(--tec);}
+  .acc-head h2{font-size:18px;color:#fff;font-weight:700;}
+  .acc-head .chev{font-size:14px;color:var(--verde-soft);transition:transform .2s;}
+  .acc.open .acc-head .chev{transform:rotate(90deg);}
+  .acc.fixed .acc-head{cursor:default;background:var(--verde);}
+  .acc.acc-amber.fixed .acc-head{background:var(--amber);}
+  .acc.fixed .chev{display:none;}
+  .acc-body{padding:0 24px;max-height:0;overflow:hidden;transition:max-height .25s ease,padding .25s ease;background:#fff;}
+  .acc.open .acc-body{max-height:none;padding:20px 24px 22px;}
+  .acc.fixed .acc-body{max-height:none;padding:20px 24px 22px;}
+
+  .vrow{display:grid;grid-template-columns:1fr 90px;gap:12px;align-items:center;padding:9px 12px;border-top:1px solid #eef2f0;font-size:14.5px;}
+  .vrow:nth-child(even){background:#fafcfb;}
+  .vrow.head{border-top:none;color:#fff;font-weight:700;font-size:13px;background:var(--tec);border-radius:8px;}
+  .vname{font-weight:600;}
+  .vtot{border-top:2px solid var(--gris-borde);margin-top:5px;padding-top:11px;color:var(--tec);font-weight:700;}
+
+  .pbtn{font-size:13px;font-weight:700;border-radius:8px;padding:5px 12px;cursor:pointer;border:1.5px solid var(--gris-borde);background:#fff;color:var(--gris);transition:all .12s;}
+  .pbtn:hover{border-color:var(--gris);}
+  .pbtn.mario.on{background:var(--verde);border-color:var(--verde);color:#fff;}
+  .pbtn.ramon.on{background:var(--azul);border-color:var(--azul);color:#fff;}
+  .pbtn.mario:hover{border-color:var(--verde);color:var(--verde);}
+  .pbtn.ramon:hover{border-color:var(--azul);color:var(--azul);}
+  .pbtn.mario.on:hover,.pbtn.ramon.on:hover{color:#fff;}
+  .pbtn.on.partial{background-image:repeating-linear-gradient(45deg, rgba(255,255,255,.34) 0 3px, rgba(255,255,255,0) 3px 7px);}
+  .pbtn.mario.minor{border-color:var(--verde-borde);color:var(--verde);box-shadow:inset 0 -3px 0 var(--verde);}
+  .pbtn.ramon.minor{border-color:var(--azul-borde);color:var(--azul);box-shadow:inset 0 -3px 0 var(--azul);}
+  .pbtn.dim{opacity:.28;}
+  .pbtn.dim:hover{opacity:.95;}
+
+  .bulkbar{display:flex;align-items:flex-end;gap:12px;flex-wrap:wrap;margin-bottom:14px;padding:14px;background:var(--gris-soft);border:1px solid var(--gris-borde);border-radius:12px;}
+  .bulkhint{flex-basis:100%;font-size:12.5px;color:var(--gris);font-weight:600;margin-bottom:2px;}
+  .bulkcol{display:flex;flex-direction:column;gap:6px;flex:1;min-width:120px;}
+  .bulkcol .bl{font-size:13px;font-weight:800;color:var(--tinta);}
+  .bulkcol .blmeta{font-size:10.5px;color:var(--gris);font-weight:600;}
+  .bulkcol .bbtns{display:flex;gap:5px;}
+  .bulkcol .bbtns .pbtn{flex:1;padding:5px 0;font-size:12px;text-align:center;}
+  .bulkclear{align-self:flex-end;background:#fff;color:var(--gris);border:1.5px solid var(--gris-borde);}
+  .bulkclear:hover{border-color:#c0392b;color:#c0392b;}
+
+  .draghint{font-size:13px;color:var(--gris);font-weight:600;margin-bottom:14px;background:var(--verde-soft);border:1px solid var(--verde-borde);border-radius:9px;padding:9px 12px;}
+
+  .calweek{margin-bottom:20px;}
+  .calweek h3{font-size:13.5px;color:var(--tec);font-weight:800;margin-bottom:9px;text-transform:uppercase;letter-spacing:.6px;border-bottom:2px solid var(--verde-soft);padding-bottom:5px;}
+  .calgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+  .daycard{border:1px solid #e6ebe8;border-radius:11px;background:#fbfdfc;padding:11px 12px;display:flex;flex-direction:column;gap:7px;min-height:178px;}
+  .daycard.pickedM{border-color:var(--verde-borde);background:var(--verde-soft);}
+  .daycard.pickedR{border-color:var(--azul-borde);background:var(--azul-soft);}
+  .dc-day{font-size:14px;font-weight:800;color:var(--tec);}
+  .dc-meta{font-size:10.5px;color:var(--gris);font-weight:600;}
+  .temabox{position:relative;flex:1;border:1.5px solid var(--gris-borde);border-radius:10px;background:#fff;padding:9px 28px 10px 11px;cursor:grab;box-shadow:0 1px 3px rgba(0,0,0,.06);transition:transform .1s,box-shadow .12s,border-color .12s;}
+  .temabox:hover{transform:translateY(-1px);box-shadow:0 5px 14px rgba(10,61,44,.16);border-color:var(--verde-borde);}
+  .temabox:active{cursor:grabbing;}
+  .temabox.dragging{opacity:.4;}
+  .temabox.dragover{border:2px dashed var(--verde);box-shadow:0 0 0 3px var(--verde-soft);}
+  .temabox .grip{position:absolute;top:8px;right:9px;color:#b6c2bc;font-size:14px;letter-spacing:-2px;}
+  .tbadge{display:inline-block;font-size:10.5px;font-weight:800;background:#fff;border:1px solid #e6ebe8;border-radius:99px;padding:2px 9px;}
+  .tema-cont{font-size:12.5px;color:var(--gris);line-height:1.45;margin-top:6px;}
+  .dc-pick{display:flex;gap:5px;}
+  .dc-pick .pbtn{flex:1;padding:5px 0;font-size:12px;text-align:center;}
+
+  .evalrow{display:flex;justify-content:space-between;gap:20px;font-size:15px;padding:7px 0;border-bottom:1px solid #f0f2f1;max-width:560px;}
+  .evalrow:last-child{border-bottom:none;}
+  .evalrow b{color:var(--verde);}
+
+  @media(max-width:900px){ .calgrid{grid-template-columns:1fr;} }
+
+  #gate{position:fixed;inset:0;z-index:1000;background:linear-gradient(180deg,#0a3d2c,#0e5a40);display:flex;align-items:center;justify-content:center;}
+  #gate.hidden{display:none;}
+  .gatebox{background:#fff;border-radius:16px;padding:32px 30px;width:min(360px,90vw);box-shadow:0 12px 40px rgba(0,0,0,.3);text-align:center;}
+  .gatebox h2{color:var(--tec);font-size:20px;margin-bottom:6px;}
+  .gatebox p{color:var(--gris);font-size:14px;margin-bottom:16px;}
+  .gatebox input{width:100%;padding:11px 13px;border:1.5px solid var(--gris-borde);border-radius:9px;font-size:15px;margin-bottom:12px;}
+  .gatebox input:focus{outline:none;border-color:var(--verde);}
+  .gatebox button{width:100%;background:var(--verde);color:#fff;border:none;border-radius:9px;padding:11px;font-size:15px;font-weight:700;cursor:pointer;}
+  .gatebox button:hover{background:#009a45;}
+  #gateerr{color:#c0392b;font-size:13px;margin-top:10px;min-height:16px;}
+</style>
+</head>
+<body>
+  <div id="gate">
+    <div class="gatebox">
+      <h2>TM1001B · acceso</h2>
+      <p>Plan compartido Mario / Ramón. Introduce la contraseña.</p>
+      <input id="gatepw" type="password" placeholder="Contraseña" autocomplete="off" autofocus>
+      <button onclick="checkGate()">Entrar</button>
+      <div id="gateerr"></div>
+    </div>
+  </div>
+
+  <div class="header-row">
+    <div>
+      <h1>Creatividad sonora y producción musical — plan de sesiones</h1>
+      <div class="h1sub">Clase compartida Mario / Ramón · TM1001B · Bloque Periodo 1 · 10 ago – 11 sep 2026</div>
+    </div>
+    <div class="cta-wrap">
+      <span class="cta-arrow">👉</span>
+      <a class="btn-analitico" href="TM1001B%20-%20Anal%C3%ADtico.pdf" target="_blank">📄 Link al analítico</a>
+    </div>
+  </div>
+
+  <div class="wrap">
+
+  <div class="balance">
+    <h2>Balance de carga <span class="meta">team teaching con Ramón · reparto por horas</span></h2>
+    <div class="balbar">
+      <div class="balseg m" id="segM" style="width:0%"></div>
+      <div class="balseg r" id="segR" style="width:0%"></div>
+      <div class="balseg none" id="segN" style="width:100%">sin asignar</div>
+    </div>
+    <div class="ballbls">
+      <span class="m" id="lblM">Mario: 0 h (0%)</span>
+      <span class="r" id="lblR">Ramón: 0 h (0%)</span>
+      <span class="none" id="lblN">Sin asignar: 60 h</span>
+    </div>
+  </div>
+
+  <!-- NOTAS GENERALES -->
+  <div class="acc fixed open">
+    <div class="acc-head"><h2>Notas generales</h2></div>
+    <div class="acc-body">
+      <p class="lead"><b>Horario:</b> martes, miércoles y viernes de 15:00 a 19:00 en el estudio. 5 semanas, del 10 de agosto al 11 de septiembre.</p>
+      <p class="lead"><b>Reparto:</b> 50 / 50 entre Mario y Ramón.</p>
+      <p class="lead"><b>Coordinador:</b> Ramón Santillana (confirmado por Alejandro el 30 de junio).</p>
+      <p class="lead"><b>Base:</b> versión inicial armada directo del analítico oficial (temas, horas y evaluación tal cual), sin ajustes acordados en junta.</p>
+    </div>
+  </div>
+
+  <!-- PENDIENTES -->
+  <div class="acc fixed open acc-amber">
+    <div class="acc-head"><h2>📌 Pendientes 📌</h2></div>
+    <div class="acc-body"><div id="pendientes"></div></div>
+  </div>
+
+  <!-- CALENDARIO POR SEMANAS -->
+  <div class="acc open">
+    <div class="acc-head"><h2>Calendario por semanas</h2><span class="chev">▶</span></div>
+    <div class="acc-body">
+      <div class="bulkbar" id="bulkbar"></div>
+      <div class="draghint">Arrastra el recuadro del tema de una sesión a otra y se intercambian. El día y quién la imparte no se mueven.</div>
+      <div id="cal"></div>
+    </div>
+  </div>
+
+  <!-- HORAS POR TEMA -->
+  <div class="acc">
+    <div class="acc-head"><h2>Horas por tema (analítico)</h2><span class="chev">▶</span></div>
+    <div class="acc-body">
+      <div class="vrow head"><div>Tema</div><div>Horas</div></div>
+      <div class="vrow"><div class="vname">Tema 1 · Teoría y lenguaje musical</div><div>6 h</div></div>
+      <div class="vrow"><div class="vname">Tema 2 · Tecnología musical y sonora</div><div>8 h</div></div>
+      <div class="vrow"><div class="vname">Tema 3 · Apreciación de material sonoro/musical</div><div>6 h</div></div>
+      <div class="vrow"><div class="vname">Tema 4 · Producción sonora y musical</div><div>14 h</div></div>
+      <div class="vrow"><div class="vname">Tema 5 · Música en la era digital</div><div>6 h</div></div>
+      <div class="vrow"><div class="vname">Seguimiento y evaluación</div><div>20 h</div></div>
+      <div class="vrow vtot"><div class="vname">Total</div><div>60 h</div></div>
+    </div>
+  </div>
+
+  <!-- EVALUACIÓN -->
+  <div class="acc">
+    <div class="acc-head"><h2>Evaluación (analítico)</h2><span class="chev">▶</span></div>
+    <div class="acc-body">
+      <div class="evalrow"><span>Evidencia de aprendizaje 1</span><b>25%</b></div>
+      <div class="evalrow"><span>Evidencia de aprendizaje 2</span><b>30%</b></div>
+      <div class="evalrow"><span>Actividades ponderadas</span><b>20%</b></div>
+      <div class="evalrow"><span>Proyecto final</span><b>25%</b></div>
+    </div>
+  </div>
+
+  </div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script>
+  const GATE_PW = "MarRamTM1001";
+  function checkGate(){
+    const v = document.getElementById('gatepw').value.trim().toLowerCase();
+    if(v === GATE_PW.toLowerCase()){ localStorage.setItem('tm1001b_gate','1'); document.getElementById('gate').classList.add('hidden'); }
+    else { document.getElementById('gateerr').textContent = 'Contraseña incorrecta'; document.getElementById('gatepw').select(); }
+  }
+  if(localStorage.getItem('tm1001b_gate')==='1') document.getElementById('gate').classList.add('hidden');
+  document.getElementById('gatepw').addEventListener('keydown', function(e){ if(e.key==='Enter') checkGate(); });
+
+  const KEY = 'tm1001b_profes';
+
+  // Sincronización en vivo (Firebase) — mismo proyecto que TM2005B, datos bajo la ruta tm1001b/.
+  const firebaseConfig = {
+    apiKey: "AIzaSyA1c-U6GwdGiPYMWmyMq4IcNyXu3QsxNC0",
+    authDomain: "tm2005b.firebaseapp.com",
+    databaseURL: "https://tm2005b-default-rtdb.firebaseio.com",
+    projectId: "tm2005b",
+    storageBucket: "tm2005b.firebasestorage.app",
+    messagingSenderId: "130056709420",
+    appId: "1:130056709420:web:afe50e0f13bcae4f043889"
+  };
+  const USE_FB = !!firebaseConfig.apiKey;
+  let fbRef = null;
+
+  // Propuesta inicial: Mario imparte Creatividad sonora en los días en que Enrique imparte
+  // Diseño de aplicaciones (las dos clases caen en el mismo horario, ahí Mario está libre);
+  // el resto lo cubre Ramón. Se siembra una sola vez; después las marcas se editan a mano.
+  const PROPUESTA = {s1:"mario",s2:"ramon",s3:"ramon",s4:"mario",s5:"ramon",s6:"mario",s7:"mario",s8:"ramon",s9:"ramon",s10:"mario",s11:"ramon",s12:"mario",s13:"ramon",s14:"mario",s15:"ramon"};
+  let saved = JSON.parse(localStorage.getItem(KEY) || '{}');
+  if(!localStorage.getItem('tm1001b_propuesta_v1')){
+    saved = Object.assign({}, PROPUESTA);
+    localStorage.setItem(KEY, JSON.stringify(saved));
+    localStorage.setItem('tm1001b_propuesta_v1','1');
+  }
+
+  const TEMA = {
+    T1:{lbl:'Tema 1 · Teoría y lenguaje musical', col:'#6b4ea8'},
+    T2:{lbl:'Tema 2 · Tecnología musical y sonora', col:'#b8860b'},
+    T3:{lbl:'Tema 3 · Apreciación sonora/musical', col:'#0e7c86'},
+    T4:{lbl:'Tema 4 · Producción sonora y musical', col:'#c0392b'},
+    T5:{lbl:'Tema 5 · Música en la era digital', col:'#8a5a00'},
+    EVAL:{lbl:'Seguimiento y evaluación', col:'#475467'}
+  };
+
+  const WEEKDAYS = [
+    {wd:'mar', lbl:'Martes',   meta:'3–7 · 4 h · estudio'},
+    {wd:'mie', lbl:'Miércoles',meta:'3–7 · 4 h · estudio'},
+    {wd:'vie', lbl:'Viernes',  meta:'3–7 · 4 h · estudio'}
+  ];
+
+  // Posiciones fijas del calendario (fecha + quién imparte). El tema NO vive aquí: viaja aparte.
+  const WEEKS = [
+    {label:'Semana 1 · 11–14 ago', days:[
+      {id:'s1', wd:'mar', day:'Mar 11 ago', meta:'3–7 · 4 h · estudio', h:4},
+      {id:'s2', wd:'mie', day:'Mié 12 ago', meta:'3–7 · 4 h · estudio', h:4},
+      {id:'s3', wd:'vie', day:'Vie 14 ago', meta:'3–7 · 4 h · estudio', h:4}
+    ]},
+    {label:'Semana 2 · 18–21 ago', days:[
+      {id:'s4', wd:'mar', day:'Mar 18 ago', meta:'3–7 · 4 h · estudio', h:4},
+      {id:'s5', wd:'mie', day:'Mié 19 ago', meta:'3–7 · 4 h · estudio', h:4},
+      {id:'s6', wd:'vie', day:'Vie 21 ago', meta:'3–7 · 4 h · estudio', h:4}
+    ]},
+    {label:'Semana 3 · 25–28 ago', days:[
+      {id:'s7', wd:'mar', day:'Mar 25 ago', meta:'3–7 · 4 h · estudio', h:4},
+      {id:'s8', wd:'mie', day:'Mié 26 ago', meta:'3–7 · 4 h · estudio', h:4},
+      {id:'s9', wd:'vie', day:'Vie 28 ago', meta:'3–7 · 4 h · estudio', h:4}
+    ]},
+    {label:'Semana 4 · 1–4 sep', days:[
+      {id:'s10', wd:'mar', day:'Mar 1 sep', meta:'3–7 · 4 h · estudio', h:4},
+      {id:'s11', wd:'mie', day:'Mié 2 sep', meta:'3–7 · 4 h · estudio', h:4},
+      {id:'s12', wd:'vie', day:'Vie 4 sep', meta:'3–7 · 4 h · estudio', h:4}
+    ]},
+    {label:'Semana 5 · 8–11 sep', days:[
+      {id:'s13', wd:'mar', day:'Mar 8 sep', meta:'3–7 · 4 h · estudio', h:4},
+      {id:'s14', wd:'mie', day:'Mié 9 sep', meta:'3–7 · 4 h · estudio', h:4},
+      {id:'s15', wd:'vie', day:'Vie 11 sep', meta:'3–7 · 4 h · estudio', h:4}
+    ]}
+  ];
+
+  // Temas (un tema limpio por sesión, sin "cierre/inicio") en su orden inicial.
+  const TEMAS_DEFAULT = [
+    {tema:'T1', cont:'1.1 Elementos constitutivos de la música · 1.2 Ritmo.'},
+    {tema:'T1', cont:'1.3 Melodía · 1.4 Armonía · 1.5 Forma.'},
+    {tema:'T2', cont:'2.1 DAWs · 2.2 Micrófonos · 2.3 Cables.'},
+    {tema:'T2', cont:'2.4 Interfaz de audio · 2.5 Mesa de mezcla.'},
+    {tema:'T3', cont:'3.1 Estructuras comunes (blues, rock, electrónica).'},
+    {tema:'T3', cont:'3.2 El jazz: un breakpoint musical · 3.3 La música como fenómeno antropológico.'},
+    {tema:'T4', cont:'4.1 Preproducción, producción y postproducción · 4.2 Estudio profesional vs home studio.'},
+    {tema:'T4', cont:'4.3 Tipos de herramientas digitales · 4.4 Efectos (frecuencia, tiempo, dinámica).'},
+    {tema:'T4', cont:'4.5 Controladores MIDI · 4.6 Routing.'},
+    {tema:'T5', cont:'5.1 Distribuidoras digitales (net labels, YouTube, streaming) · 5.2 Generación de riqueza.'},
+    {tema:'EVAL', cont:'Seguimiento y evaluación.'},
+    {tema:'EVAL', cont:'Seguimiento y evaluación.'},
+    {tema:'EVAL', cont:'Seguimiento y evaluación.'},
+    {tema:'EVAL', cont:'Seguimiento y evaluación.'},
+    {tema:'EVAL', cont:'Entrega del proyecto final.'}
+  ];
+
+  const ALLDAYS = WEEKS.flatMap(w => w.days);
+  const TOTAL = ALLDAYS.reduce((s,d) => s + d.h, 0);
+
+  // Orden de los temas por posición (índice en TEMAS_DEFAULT). Editable por drag and drop.
+  const ORDEN_KEY = 'tm1001b_temas_orden';
+  let temasOrden = JSON.parse(localStorage.getItem(ORDEN_KEY) || 'null');
+  if(!Array.isArray(temasOrden) || temasOrden.length !== TEMAS_DEFAULT.length){
+    temasOrden = TEMAS_DEFAULT.map((_,i)=>i);
+    localStorage.setItem(ORDEN_KEY, JSON.stringify(temasOrden));
+  }
+  function persist(){
+    localStorage.setItem(KEY, JSON.stringify(saved));
+    localStorage.setItem(ORDEN_KEY, JSON.stringify(temasOrden));
+    localStorage.setItem(PEND_KEY, JSON.stringify(pendEstado));
+    if(USE_FB && fbRef) fbRef.set({asignaciones: saved, temas: temasOrden, pendientes: pendEstado});
+  }
+  function persistOrden(){ persist(); }
+  function refresh(){ renderBulk(); renderCal(); updateBalance(); }
+
+  function dayCard(p){
+    const d  = ALLDAYS[p];
+    const tb = TEMAS_DEFAULT[temasOrden[p]];
+    const t  = TEMA[tb.tema];
+    const who = saved[d.id];
+    const cls = who==='mario' ? ' pickedM' : who==='ramon' ? ' pickedR' : '';
+    return '<div class="daycard'+cls+'">'
+      + '<div class="dc-day">'+d.day+'</div>'
+      + '<div class="dc-meta">'+d.meta+'</div>'
+      + '<div class="temabox" draggable="true" data-pos="'+p+'" title="Arrastra este tema a otra sesión">'
+      +   '<span class="grip">⠿</span>'
+      +   '<span class="tbadge" style="color:'+t.col+'">'+t.lbl+'</span>'
+      +   '<div class="tema-cont">'+tb.cont+'</div>'
+      + '</div>'
+      + '<div class="dc-pick">'
+      +   '<button class="pbtn mario'+(who==='mario'?' on':(who?' dim':''))+'" onclick="choose(\''+d.id+'\',\'mario\')">Mario</button>'
+      +   '<button class="pbtn ramon'+(who==='ramon'?' on':(who?' dim':''))+'" onclick="choose(\''+d.id+'\',\'ramon\')">Ramón</button>'
+      + '</div></div>';
+  }
+
+  let dragSrc = null;
+  function renderCal(){
+    let html = '', p = 0;
+    WEEKS.forEach(w => {
+      html += '<div class="calweek"><h3>'+w.label+'</h3><div class="calgrid">';
+      w.days.forEach(() => { html += dayCard(p); p++; });
+      html += '</div></div>';
+    });
+    const cal = document.getElementById('cal');
+    cal.innerHTML = html;
+    cal.querySelectorAll('.temabox').forEach(box => {
+      box.addEventListener('dragstart', e => {
+        dragSrc = +box.dataset.pos;
+        box.classList.add('dragging');
+        e.dataTransfer.effectAllowed = 'move';
+        try{ e.dataTransfer.setData('text/plain', String(dragSrc)); }catch(_){ }
+      });
+      box.addEventListener('dragend', () => {
+        box.classList.remove('dragging');
+        cal.querySelectorAll('.temabox').forEach(b=>b.classList.remove('dragover'));
+      });
+      box.addEventListener('dragover', e => { e.preventDefault(); e.dataTransfer.dropEffect='move'; box.classList.add('dragover'); });
+      box.addEventListener('dragleave', () => box.classList.remove('dragover'));
+      box.addEventListener('drop', e => {
+        e.preventDefault();
+        const tgt = +box.dataset.pos;
+        if(dragSrc !== null && dragSrc !== tgt){
+          const tmp = temasOrden[dragSrc]; temasOrden[dragSrc] = temasOrden[tgt]; temasOrden[tgt] = tmp;
+          persistOrden();
+          refresh();
+        }
+        dragSrc = null;
+      });
+    });
+  }
+
+  function bulkState(wd){
+    const ds = ALLDAYS.filter(d => d.wd===wd);
+    let m=0, e=0;
+    ds.forEach(d => { if(saved[d.id]==='mario') m++; else if(saved[d.id]==='ramon') e++; });
+    return {m, e, total:ds.length, none:ds.length-m-e};
+  }
+  function bulkCls(person, st){
+    const cnt   = person==='mario' ? st.m : st.e;
+    const other = person==='mario' ? st.e : st.m;
+    if(cnt===0)        return '';
+    if(cnt===st.total) return ' on';
+    if(cnt>=other)     return ' on partial';
+    return ' minor';
+  }
+  function renderBulk(){
+    const cols = WEEKDAYS.map(x => {
+      const st = bulkState(x.wd);
+      const title = 'Mario '+st.m+' / Ramón '+st.e + (st.none ? ' / sin asignar '+st.none : '') + ' (de '+st.total+' semanas)';
+      return '<div class="bulkcol"><div class="bl">'+x.lbl+'<div class="blmeta">'+x.meta+'</div></div>'
+        + '<div class="bbtns">'
+        +   '<button class="pbtn mario'+bulkCls('mario',st)+'" title="'+title+'" onclick="assignDay(\''+x.wd+'\',\'mario\')">Mario</button>'
+        +   '<button class="pbtn ramon'+bulkCls('ramon',st)+'" title="'+title+'" onclick="assignDay(\''+x.wd+'\',\'ramon\')">Ramón</button>'
+        + '</div></div>';
+    }).join('');
+    document.getElementById('bulkbar').innerHTML =
+      '<div class="bulkhint">Asigna un día completo (las 5 semanas) a Mario o Ramón. <b>Sólido</b> = todo el día es de esa persona · <b>rayado</b> = mayoría con alguna excepción · <b>rayita</b> = alguna clase suelta. Ajusta clases con el selector de cada tarjeta.</div>'
+      + cols
+      + '<button class="pbtn bulkclear" onclick="clearAll()">Limpiar todo</button>';
+  }
+
+  function pct(h){ return Math.round(h / TOTAL * 100); }
+  function updateBalance(){
+    let m = 0, r = 0;
+    ALLDAYS.forEach(d => { if(saved[d.id]==='mario') m += d.h; else if(saved[d.id]==='ramon') r += d.h; });
+    const none = TOTAL - m - r;
+    document.getElementById('segM').style.width = (m/TOTAL*100)+'%';
+    document.getElementById('segR').style.width = (r/TOTAL*100)+'%';
+    document.getElementById('segN').style.width = (none/TOTAL*100)+'%';
+    document.getElementById('segM').textContent = m ? 'Mario '+pct(m)+'%' : '';
+    document.getElementById('segR').textContent = r ? 'Ramón '+pct(r)+'%' : '';
+    document.getElementById('segN').textContent = none ? 'sin asignar' : '';
+    document.getElementById('lblM').textContent = 'Mario: '+m+' h ('+pct(m)+'%)';
+    document.getElementById('lblR').textContent = 'Ramón: '+r+' h ('+pct(r)+'%)';
+    document.getElementById('lblN').textContent = 'Sin asignar: '+none+' h';
+  }
+
+  function choose(id, who){
+    if(saved[id]===who) delete saved[id]; else saved[id]=who;
+    persist(); refresh();
+  }
+  function assignDay(wd, who){
+    ALLDAYS.filter(d => d.wd===wd).forEach(d => saved[d.id]=who);
+    persist(); refresh();
+  }
+  function clearAll(){
+    Object.keys(saved).forEach(k => delete saved[k]);
+    persist(); refresh();
+  }
+
+  document.querySelectorAll('.acc:not(.fixed) .acc-head').forEach(head => {
+    head.addEventListener('click', () => {
+      const acc = head.parentElement; const wasOpen = acc.classList.contains('open');
+      document.querySelectorAll('.acc:not(.fixed)').forEach(a => a.classList.remove('open'));
+      if(!wasOpen) acc.classList.add('open');
+    });
+  });
+
+  // ---- Pendientes (checkbox + responsable) ----
+  const PEND_KEY = 'tm1001b_pendientes';
+  const PENDIENTES = [
+    {id:'p1', quien:'Ramón', txt:'Los temas están puestos en orden cronológico como lo menciona el analítico, pero Ramón puede moverlos en la interfaz de abajo para dar los que él quiera, y Mario da los otros. Siéntete libre, profe Ramón, de elegir los temas que gustes.'},
+    {id:'p2', quien:'Ramón', txt:'Ramón confirma si los días que le quedaron asignados le funcionan o si los reacomodamos.'},
+    {id:'p3', quien:'Mario', txt:'Mario confirma con Alejandro Ocampo si pueden no tener socio formador y mantener la evaluación interna.'},
+    {id:'p4', quien:'Ambos', bloqueado:'No se puede hacer hasta el 12 de julio, cuando se abre Canvas.', txt:'Revisar en Canvas las actividades de evaluación y el reto. Si convencen, se dejan; si no, ideamos otras actividades y otro reto.'}
+  ];
+  let pendEstado = JSON.parse(localStorage.getItem(PEND_KEY) || '{}');
+  function renderPendientes(){
+    const cont = document.getElementById('pendientes');
+    cont.innerHTML = PENDIENTES.map(p => {
+      const done = !!pendEstado[p.id];
+      let chips;
+      if(p.quien === 'Ambos'){
+        chips = '<span class="pend-who who-mario">Mario</span><span class="pend-who who-ramon">Ramón</span>';
+      } else {
+        const whoCls = p.quien==='Mario' ? 'who-mario' : 'who-ramon';
+        chips = '<span class="pend-who '+whoCls+'">'+p.quien+'</span>';
+      }
+      const lock = p.bloqueado ? '<span class="pend-lock">🔒 '+p.bloqueado+'</span>' : '';
+      return '<label class="pend'+(done?' done':'')+'">'
+        + '<input type="checkbox" data-pid="'+p.id+'"'+(done?' checked':'')+'>'
+        + '<span class="pend-whos">'+chips+'</span>'
+        + '<span class="pend-txt">'+p.txt+lock+'</span>'
+        + '</label>';
+    }).join('');
+    cont.querySelectorAll('input[type=checkbox]').forEach(cb=>{
+      cb.onchange = ()=>{ pendEstado[cb.dataset.pid]=cb.checked; persist(); renderPendientes(); };
+    });
+  }
+  renderPendientes();
+
+  refresh();
+
+  // Conectar Firebase y sincronizar en vivo entre Mario y Ramón.
+  if(USE_FB){
+    firebase.initializeApp(firebaseConfig);
+    fbRef = firebase.database().ref('tm1001b/estado');
+    fbRef.on('value', function(snap){
+      const e = snap.val();
+      if(e){
+        saved = e.asignaciones || {};
+        temasOrden = (Array.isArray(e.temas) && e.temas.length === TEMAS_DEFAULT.length) ? e.temas : TEMAS_DEFAULT.map((_,i)=>i);
+        pendEstado = e.pendientes || {};
+        refresh();
+        renderPendientes();
+      } else {
+        fbRef.set({asignaciones: saved, temas: temasOrden, pendientes: pendEstado});
+      }
+    });
+  }
+</script>
+</body>
+</html>
