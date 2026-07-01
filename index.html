@@ -118,6 +118,25 @@
   .evalrow{display:flex;justify-content:space-between;gap:20px;font-size:15px;padding:7px 0;border-bottom:1px solid #f0f2f1;max-width:560px;}
   .evalrow:last-child{border-bottom:none;}
   .evalrow b{color:var(--verde);}
+  .nota-eval{margin-top:18px;background:var(--amber-soft);border:1px solid #f3d79a;border-left:5px solid var(--amber);border-radius:10px;padding:12px 15px;font-size:14.5px;line-height:1.55;color:#7a5200;max-width:640px;}
+  .nota-eval b{color:#9a6700;}
+
+  /* Notas para la próxima junta */
+  .nj-sub{font-size:13px;color:var(--verde-soft);font-weight:600;margin-left:8px;}
+  .nj-form{display:flex;flex-direction:column;gap:12px;background:var(--gris-soft);border:1px solid var(--gris-borde);border-radius:12px;padding:14px 16px;margin-bottom:18px;}
+  .nj-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  .nj-lbl{font-size:13.5px;font-weight:800;color:var(--tinta);}
+  .nj-form textarea{width:100%;min-height:72px;border:1.5px solid var(--gris-borde);border-radius:9px;padding:10px 12px;font-size:14.5px;font-family:inherit;resize:vertical;}
+  .nj-form textarea:focus{outline:none;border-color:var(--verde);}
+  .nj-add{align-self:flex-start;background:var(--verde);color:#fff;border:none;border-radius:9px;padding:9px 20px;font-size:14px;font-weight:700;cursor:pointer;}
+  .nj-add:hover{background:#009a45;}
+  .nj-list{display:flex;flex-direction:column;gap:10px;}
+  .nj-empty{font-size:13.5px;color:var(--gris);font-style:italic;}
+  .nj-note{display:flex;gap:12px;align-items:flex-start;background:#fff;border:1px solid #e6ebe8;border-radius:11px;padding:11px 13px;box-shadow:0 1px 3px rgba(0,0,0,.05);}
+  .nj-note .pend-who{flex:none;margin-top:1px;}
+  .nj-txt{flex:1;font-size:14.5px;line-height:1.5;color:var(--tinta);white-space:pre-wrap;}
+  .nj-del{flex:none;background:none;border:none;color:#c0392b;font-size:16px;cursor:pointer;opacity:.45;padding:0 4px;line-height:1;}
+  .nj-del:hover{opacity:1;}
 
   @media(max-width:900px){ .calgrid{grid-template-columns:1fr;} }
 
@@ -188,6 +207,23 @@
     <div class="acc-body"><div id="pendientes"></div></div>
   </div>
 
+  <!-- NOTAS PARA LA PRÓXIMA JUNTA -->
+  <div class="acc fixed open">
+    <div class="acc-head"><h2>🗓️ Notas para la próxima junta<span class="nj-sub">Lunes 6 de julio · 9:00 am</span></h2></div>
+    <div class="acc-body">
+      <div class="nj-form">
+        <div class="nj-row">
+          <span class="nj-lbl">¿Quién anota?</span>
+          <button class="pbtn mario" id="njMario" onclick="setNjAutor('Mario')">Mario</button>
+          <button class="pbtn ramon" id="njRamon" onclick="setNjAutor('Ramón')">Ramón</button>
+        </div>
+        <textarea id="njTexto" placeholder="Escribe la nota para la próxima junta…"></textarea>
+        <button class="nj-add" onclick="addNota()">Agregar nota</button>
+      </div>
+      <div class="nj-list" id="njList"></div>
+    </div>
+  </div>
+
   <!-- CALENDARIO POR SEMANAS -->
   <div class="acc open">
     <div class="acc-head"><h2>Calendario por semanas</h2><span class="chev">▶</span></div>
@@ -221,6 +257,7 @@
       <div class="evalrow"><span>Evidencia de aprendizaje 2</span><b>30%</b></div>
       <div class="evalrow"><span>Actividades ponderadas</span><b>20%</b></div>
       <div class="evalrow"><span>Proyecto final</span><b>25%</b></div>
+      <div class="nota-eval">Alejandro confirmó que el socio formador es <b>opcional</b> para este bloque. Como Ramón es el coordinador, es él quien debe comunicarle directamente a Alejandro la decisión de si tenemos o no socio formador.</div>
     </div>
   </div>
 
@@ -341,7 +378,8 @@
     localStorage.setItem(KEY, JSON.stringify(saved));
     localStorage.setItem(ORDEN_KEY, JSON.stringify(temasOrden));
     localStorage.setItem(PEND_KEY, JSON.stringify(pendEstado));
-    if(USE_FB && fbRef) fbRef.set({asignaciones: saved, temas: temasOrden, pendientes: pendEstado});
+    localStorage.setItem(NJ_KEY, JSON.stringify(notasJunta));
+    if(USE_FB && fbRef) fbRef.set({asignaciones: saved, temas: temasOrden, pendientes: pendEstado, notasJunta: notasJunta});
   }
   function persistOrden(){ persist(); }
   function refresh(){ renderBulk(); renderCal(); updateBalance(); }
@@ -502,6 +540,43 @@
   }
   renderPendientes();
 
+  // ---- Notas para la próxima junta (lunes 6 jul, 9:00 am) ----
+  const NJ_KEY = 'tm1001b_notasjunta';
+  let notasJunta = JSON.parse(localStorage.getItem(NJ_KEY) || '[]');
+  let njAutor = 'Mario';
+  function escapeHtml(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+  function setNjAutor(a){
+    njAutor = a;
+    document.getElementById('njMario').classList.toggle('on', a==='Mario');
+    document.getElementById('njRamon').classList.toggle('on', a==='Ramón');
+  }
+  function addNota(){
+    const ta = document.getElementById('njTexto');
+    const txt = ta.value.trim();
+    if(!txt){ ta.focus(); return; }
+    notasJunta.push({id:'n'+Date.now(), autor:njAutor, txt:txt});
+    ta.value='';
+    persist(); renderNotasJunta();
+  }
+  function delNota(id){
+    notasJunta = notasJunta.filter(n => n.id !== id);
+    persist(); renderNotasJunta();
+  }
+  function renderNotasJunta(){
+    const cont = document.getElementById('njList');
+    if(!notasJunta.length){ cont.innerHTML = '<div class="nj-empty">Aún no hay notas. Agrega la primera arriba.</div>'; return; }
+    cont.innerHTML = notasJunta.map(n => {
+      const whoCls = n.autor==='Mario' ? 'who-mario' : 'who-ramon';
+      return '<div class="nj-note">'
+        + '<span class="pend-who '+whoCls+'">'+n.autor+'</span>'
+        + '<span class="nj-txt">'+escapeHtml(n.txt)+'</span>'
+        + '<button class="nj-del" title="Eliminar" onclick="delNota(\''+n.id+'\')">✕</button>'
+        + '</div>';
+    }).join('');
+  }
+  setNjAutor('Mario');
+  renderNotasJunta();
+
   refresh();
 
   // Conectar Firebase y sincronizar en vivo entre Mario y Ramón.
@@ -514,10 +589,12 @@
         saved = e.asignaciones || {};
         temasOrden = (Array.isArray(e.temas) && e.temas.length === TEMAS_DEFAULT.length) ? e.temas : TEMAS_DEFAULT.map((_,i)=>i);
         pendEstado = e.pendientes || {};
+        notasJunta = Array.isArray(e.notasJunta) ? e.notasJunta : [];
         refresh();
         renderPendientes();
+        renderNotasJunta();
       } else {
-        fbRef.set({asignaciones: saved, temas: temasOrden, pendientes: pendEstado});
+        fbRef.set({asignaciones: saved, temas: temasOrden, pendientes: pendEstado, notasJunta: notasJunta});
       }
     });
   }
